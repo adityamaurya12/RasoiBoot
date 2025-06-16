@@ -1,11 +1,11 @@
-# 🧊 Fridget: Smart Recipe Recommendation using AI
+# 🧊 RasoiBot: Smart Recipe Recommendation using AI
 
 RasoiBot is an AI-based platform that recommends delicious recipes using ingredients already available in your fridge!
 
 ## 📁 Project Structure
 
 ```
-Fridget/
+RasoiBot/
 ├── frontend/       → React.js UI (Chakra UI, Material UI)
 ├── backend/        → Java Spring Boot API (MongoDB, Redis)
 ├── ai-service/     → Python Flask AI Engine (OpenAI, Scikit-learn)
