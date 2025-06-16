@@ -1,6 +1,6 @@
 # 🧊 Fridget: Smart Recipe Recommendation using AI
 
-Fridget is an AI-based platform that recommends delicious recipes using ingredients already available in your fridge!
+RasoiBot is an AI-based platform that recommends delicious recipes using ingredients already available in your fridge!
 
 ## 📁 Project Structure
 
