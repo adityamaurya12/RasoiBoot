@@ -1,0 +1,34 @@
+.login {
+  width: 300px;
+  margin: 80px auto;
+  font-family: Arial, sans-serif;
+}
+
+.login h2 {
+  text-align: center;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login input {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.login button {
+  padding: 10px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.login a {
+  text-decoration: none;
+  color: #0077cc;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,24 @@
+.dashboard {
+  padding: 40px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.dashboard p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.dashboard button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
