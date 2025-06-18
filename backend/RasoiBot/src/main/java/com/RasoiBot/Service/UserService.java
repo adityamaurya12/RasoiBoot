@@ -1,4 +1,4 @@
-package com.RasoiBot.Service;  // ✅ Fixed typo here
+package com.RasoiBot.Service;
 
 import com.RasoiBot.Model.User;
 import com.RasoiBot.Repository.UserRepository;
@@ -24,7 +24,12 @@ public class UserService {
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Optional: Hide password in response
+        savedUser.setPassword(null);
+
+        return savedUser;
     }
 
     public User loginUser(String email, String password) throws Exception {
@@ -34,6 +39,7 @@ public class UserService {
 
             // Validate the password using BCrypt
             if (BCrypt.checkpw(password, user.getPassword())) {
+                user.setPassword(null); // Don't expose hashed password
                 return user;
             } else {
                 throw new Exception("Invalid email or password");
