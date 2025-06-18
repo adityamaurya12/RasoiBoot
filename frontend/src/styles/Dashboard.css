@@ -1,4 +1,4 @@
-.dashboard {
+/* .dashboard {
   padding: 40px;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -21,4 +21,58 @@
   color: white;
   border: none;
   cursor: pointer;
+} */
+
+.dashboard-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff8f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  text-align: center;
 }
+
+.dashboard-container h1 {
+  font-size: 2.5rem;
+  color: #ff7043;
+  margin-bottom: 10px;
+}
+
+.dashboard-container p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.dashboard-container button {
+  padding: 10px 20px;
+  background-color: #ff7043;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-container button:hover {
+  background-color: #e85c2d;
+}
+
+.logout-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #e11d48;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #be123c;
+}
+
