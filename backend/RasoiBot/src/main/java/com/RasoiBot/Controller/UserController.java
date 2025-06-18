@@ -1,7 +1,7 @@
-package com.e
+package com.RasoiBot.Controller;
 
-import com.rasoibot.model.User;
-import com.rasoibot.service.UserService;
+import com.RasoiBot.Model.User;
+import com.RasoiBot.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
-package com.rasoibot.repository;
+package com.RasoiBot.Repository;
 
-import com.rasoibot.model.User;
+import com.RasoiBot.Model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

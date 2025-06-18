@@ -1,7 +1,7 @@
-package com.rasoibot.service;
+package com.RasoiBot.Service;  // ✅ Fixed typo here
 
-import com.rasoibot.model.User;
-import com.rasoibot.repository.UserRepository;
+import com.RasoiBot.Model.User;
+import com.RasoiBot.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;

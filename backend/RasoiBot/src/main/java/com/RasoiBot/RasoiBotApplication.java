@@ -1,4 +1,4 @@
-package com.example.RasoiBot;
+package com.RasoiBot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
