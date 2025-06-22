@@ -1,34 +1,103 @@
-.login {
-  width: 300px;
-  margin: 80px auto;
-  font-family: Arial, sans-serif;
+/* styles/Login.css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.login h2 {
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Full-page solid background */
+.login-page {
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff8f0;
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.login form {
-  display: flex;
-  flex-direction: column;
+.login-title {
+  font-size: 2rem;
+  color: #f97316;
+  margin-bottom: 10px;
 }
 
-.login input {
-  margin: 10px 0;
+.login-subtitle {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 10px;
+}
+
+.login-form label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.login-form input {
   padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
   font-size: 1rem;
 }
 
-.login button {
-  padding: 10px;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  cursor: pointer;
+.login-form input:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.3);
 }
 
-.login a {
-  text-decoration: none;
-  color: #0077cc;
-  font-size: 0.9rem;
+.login-form button {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f97316;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
+
+.login-form button:hover {
+  background-color: #ea580c;
+}
+
+.signup-link {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.signup-link a {
+  color: #f97316;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
