@@ -3,6 +3,8 @@ package com.RasoiBot.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List; // ✅ for storing ingredients
+
 @Document(collection = "users")
 public class User {
 
@@ -13,6 +15,8 @@ public class User {
     private String email;
     private String password;
 
+    private List<String> ingredients; // ✅ Add this field
+
     public User() {}
 
     public User(String name, String email, String password) {
@@ -21,7 +25,7 @@ public class User {
         this.password = password;
     }
 
-    // Getters & Setters
+    // ✅ Getters & Setters
 
     public String getId() {
         return id;
@@ -53,5 +57,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
     }
 }

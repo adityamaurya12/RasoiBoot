@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Dashboard.css'; // Keep using your friend's updated CSS
+import axios from 'axios';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [ingredients, setIngredients] = useState(['Onions', 'Cumin', 'Turmeric', 'Ginger', 'Chicken', 'Potato']);
+  const [ingredients, setIngredients] = useState([]);
   const [input, setInput] = useState('');
+  const [recommendedDishes, setRecommendedDishes] = useState([]);
 
   const quickAdd = ['Tomatoes', 'Onions', 'Garlic', 'Ginger', 'Rice', 'Chicken', 'Potatoes', 'Spinach', 'Paneer', 'Yogurt', 'Cumin', 'Turmeric'];
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
     const storedUser = localStorage.getItem('user');
-
     if (loggedIn !== 'true' || !storedUser) {
       navigate('/login');
     } else {
@@ -44,6 +45,40 @@ const Dashboard = () => {
     setIngredients(ingredients.filter(i => i !== item));
   };
 
+  // Save ingredients to backend
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (user && user.email && ingredients.length > 0) {
+      axios.post("http://localhost:8080/api/users/ingredients", {
+        email: user.email,
+        ingredients: ingredients
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}` // optional
+        }
+      })
+      .then(res => console.log("✅ Ingredients saved:", res.data))
+      .catch(err => console.error("❌ Error saving ingredients:", err.response?.data || err.message));
+    }
+  }, [ingredients, user]);
+
+  // Fetch recommended dishes
+  useEffect(() => {
+    if (user && user.email) {
+      axios.post("http://localhost:8080/api/recommendations", {
+        email: user.email
+      })
+        .then(res => {
+          setRecommendedDishes(res.data);
+          console.log("🍽 Recommended dishes:", res.data);
+        })
+        .catch(err => {
+          console.error("❌ Error fetching recommendations:", err.response?.data || err.message);
+        });
+    }
+  }, [user]);
+
   return (
     <div className="container">
       <aside className="sidebar">
@@ -72,7 +107,7 @@ const Dashboard = () => {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Add an ingredient..."
             />
-            <button onClick={() => addIngredient()}>Add</button>
+            <button onClick={() => addIngredient()}>Save</button>
           </div>
 
           <div className="quick-add">
@@ -93,32 +128,17 @@ const Dashboard = () => {
         </section>
 
         <section className="recommended">
-          <h3>🍽 Recommended Dishes <span className="badge">3 matches</span></h3>
+          <h3>🍽 Recommended Dishes <span className="badge">{recommendedDishes.length} matches</span></h3>
           <ul>
-            <li>
-              <img src="https://www.licious.in/blog/wp-content/uploads/2020/10/butter-chicken-.jpg" alt="Butter Chicken" />
-              <div>
-                <strong>Butter Chicken</strong>
-                <p>Creamy and rich chicken curry with aromatic spices.</p>
-                <small>🕒 45 mins | 🔥 Medium</small>
-              </div>
-            </li>
-            <li>
-              <img src="https://tastycookingaroma.com/wp-content/uploads/2024/02/Palak-Paneer-Curry-Recipe-Served-on-a-white-bowl-1536x861.jpg" alt="Palak Paneer" />
-              <div>
-                <strong>Palak Paneer</strong>
-                <p>Spinach-based curry with tender cubes of paneer.</p>
-                <small>🕒 30 mins | 🧑‍🍳 Easy</small>
-              </div>
-            </li>
-            <li>
-              <img src="https://www.madhuseverydayindian.com/wp-content/uploads/2022/11/easy-vegetable-biryani.jpg" alt="Vegetable Biryani" />
-              <div>
-                <strong>Vegetable Biryani</strong>
-                <p>Fragrant rice with a medley of spiced vegetables.</p>
-                <small>🕒 60 mins | ⚠️ Hard</small>
-              </div>
-            </li>
+            {recommendedDishes.length > 0 ? recommendedDishes.map((dish, i) => (
+              <li key={i}>
+                <img src={`https://source.unsplash.com/300x200/?${dish}`} alt={dish} />
+                <div>
+                  <strong>{dish}</strong>
+                  <p>Suggested recipe based on your fridge items.</p>
+                </div>
+              </li>
+            )) : <p>No recipes yet. Add ingredients to get started!</p>}
           </ul>
         </section>
       </main>
