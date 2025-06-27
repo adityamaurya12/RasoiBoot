@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RasoiBot Recipe Recommender</title>
+</head>
+<body>
+    <h2>🍲 Enter Ingredients</h2>
+    <form method="POST" action="/recommend">
+        <input type="text" name="ingredients" placeholder="e.g., onion, garlic, rice" required>
+        <button type="submit">Get Recipes</button>
+    </form>
+
+    {% if entered_ingredients %}
+        <p><strong>Ingredients:</strong> {{ entered_ingredients }}</p>
+    {% endif %}
+
+    {% if recommendations %}
+        <h3>Recommended Dishes:</h3>
+        <ul>
+            {% for dish in recommendations %}
+                <li>{{ dish }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
