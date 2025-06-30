@@ -1,51 +1,32 @@
-# from flask import Flask, request, render_template
-# from model import get_recommendations
-# import pandas as pd
-#
-#  app = Flask(__name__)
-#
-#  @app.route('/')
-#  def index():
-#      return render_template('index.html')
-#  @app.route('/recommend', methods=['POST'])
-#  def recommend():
-#      ingredients = request.form.get('ingredients', '')
-#      results = get_recommendations(ingredients)
-#
-#      formatted = [
-#          {"dish": name, "match_score": round(score, 2)}
-#          for name, score in results
-#      ]
-#
-#      return render_template("index.html", recommendations=formatted)
-#
-#  if __name__ == '__main__':
-#      app.run(debug=True)
-#
-#
-#
-
-from flask import Flask, request, render_template
-from model import get_recommendations
+from flask import Flask, request, jsonify
+from model import get_recommendations  # Your KNN function
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/recommend', methods=['POST'])
 def recommend():
-    ingredients = request.form.get('ingredients', '')
-    ingredient_list = [i.strip().lower() for i in ingredients.split(',') if i.strip()]
+    if not request.is_json:
+        return jsonify({"error": "Expected application/json"}), 400
 
-    ingredient_str = ','.join(ingredient_list)
-    results = get_recommendations(ingredient_str)
+    try:
+        data = request.get_json()
+        ingredients = data.get("ingredients")
 
-    # ✅ Only dish names (no score)
-    dish_names = [name for name, _ in results]
+        if not ingredients or not isinstance(ingredients, list):
+            return jsonify({"error": "Invalid or missing 'ingredients' list"}), 400
 
-    return render_template("index.html", recommendations=dish_names, entered_ingredients=ingredient_list)
+        # Clean input
+        cleaned = [i.strip().lower() for i in ingredients if i.strip()]
+        ingredient_str = ",".join(cleaned)
+
+        # Get recommendations from ML model
+        results = get_recommendations(ingredient_str)  # Expects str, returns list of tuples
+        dish_names = [dish for dish, _ in results]
+
+        return jsonify(dish_names)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

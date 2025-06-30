@@ -59,4 +59,9 @@ public class UserService {
             throw new RuntimeException("User not found with email: " + email);
         }
     }
+
+    // ✅ NEW: Get user by email (used in RecommendationController)
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
 }

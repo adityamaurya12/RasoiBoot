@@ -12,6 +12,7 @@ const Dashboard = () => {
 
   const quickAdd = ['Tomatoes', 'Onions', 'Garlic', 'Ginger', 'Rice', 'Chicken', 'Potatoes', 'Spinach', 'Paneer', 'Yogurt', 'Cumin', 'Turmeric'];
 
+  // 🔐 Load user from localStorage
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn');
     const storedUser = localStorage.getItem('user');
@@ -20,35 +21,38 @@ const Dashboard = () => {
     } else {
       try {
         const userData = JSON.parse(storedUser);
-        if (userData) setUser(userData);
-      } catch (error) {
-        console.error("Invalid user data:", error);
+        setUser(userData);
+      } catch (err) {
+        console.error("Invalid user data:", err);
         navigate('/login');
       }
     }
   }, [navigate]);
 
+  // 🚪 Logout handler
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('user');
     navigate('/');
   };
 
+  // ➕ Add ingredient
   const addIngredient = (item = input) => {
-    if (item && !ingredients.includes(item)) {
-      setIngredients([...ingredients, item]);
+    if (item && !ingredients.includes(item.trim())) {
+      setIngredients([...ingredients, item.trim()]);
       setInput('');
     }
   };
 
+  // ❌ Remove ingredient
   const removeIngredient = (item) => {
     setIngredients(ingredients.filter(i => i !== item));
   };
 
-  // Save ingredients to backend
+  // 🔄 Save ingredients to backend (MongoDB via Spring Boot)
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (user && user.email && ingredients.length > 0) {
+    if (user?.email && ingredients.length > 0) {
       axios.post("http://localhost:8080/api/users/ingredients", {
         email: user.email,
         ingredients: ingredients
@@ -57,25 +61,25 @@ const Dashboard = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}` // optional
         }
-      })
-      .then(res => console.log("✅ Ingredients saved:", res.data))
-      .catch(err => console.error("❌ Error saving ingredients:", err.response?.data || err.message));
+      }).then(res => {
+        console.log("✅ Ingredients saved:", res.data);
+      }).catch(err => {
+        console.error("❌ Error saving ingredients:", err.response?.data || err.message);
+      });
     }
   }, [ingredients, user]);
 
-  // Fetch recommended dishes
+  // 🍽 Fetch recommendations from Spring Boot → Flask
   useEffect(() => {
-    if (user && user.email) {
+    if (user?.email) {
       axios.post("http://localhost:8080/api/recommendations", {
         email: user.email
-      })
-        .then(res => {
-          setRecommendedDishes(res.data);
-          console.log("🍽 Recommended dishes:", res.data);
-        })
-        .catch(err => {
-          console.error("❌ Error fetching recommendations:", err.response?.data || err.message);
-        });
+      }).then(res => {
+        setRecommendedDishes(res.data);
+        console.log("🍽 Recommended dishes:", res.data);
+      }).catch(err => {
+        console.error("❌ Error fetching recommendations:", err.response?.data || err.message);
+      });
     }
   }, [user]);
 
@@ -98,6 +102,7 @@ const Dashboard = () => {
           <p>Hello {user?.name || 'Chef'} 👩‍🍳! Add ingredients and discover delicious recipes instantly.</p>
         </header>
 
+        {/* 🥕 INGREDIENTS */}
         <section className="manage-box">
           <h3>🥕 Manage Ingredients</h3>
           <div className="input-group">
@@ -106,6 +111,7 @@ const Dashboard = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Add an ingredient..."
+              onKeyDown={(e) => e.key === 'Enter' && addIngredient()}
             />
             <button onClick={() => addIngredient()}>Save</button>
           </div>
@@ -127,6 +133,7 @@ const Dashboard = () => {
           </div>
         </section>
 
+        {/* 🍽 RECOMMENDATIONS */}
         <section className="recommended">
           <h3>🍽 Recommended Dishes <span className="badge">{recommendedDishes.length} matches</span></h3>
           <ul>
@@ -135,10 +142,10 @@ const Dashboard = () => {
                 <img src={`https://source.unsplash.com/300x200/?${dish}`} alt={dish} />
                 <div>
                   <strong>{dish}</strong>
-                  <p>Suggested recipe based on your fridge items.</p>
+                  <p>Suggested based on your selected ingredients.</p>
                 </div>
               </li>
-            )) : <p>No recipes yet. Add ingredients to get started!</p>}
+            )) : <p>No recommendations yet. Add ingredients to get started!</p>}
           </ul>
         </section>
       </main>
